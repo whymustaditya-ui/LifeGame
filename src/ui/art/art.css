@@ -1,0 +1,13 @@
+.oren { flex: none; overflow: visible; display: block; }
+.heart { flex: none; display: block; }
+
+@media (prefers-reduced-motion: no-preference) {
+  .oren-blink { animation: oren-blink 4s infinite; transform-box: fill-box; transform-origin: center; }
+  @keyframes oren-blink { 0%, 92%, 100% { transform: scaleY(1); } 95% { transform: scaleY(0.1); } }
+}
+
+.coin-stage { perspective: 600px; display: flex; align-items: center; justify-content: center; }
+.coin { width: 64px; height: 64px; position: relative; transform-style: preserve-3d; }
+.coin-face { position: absolute; inset: 0; backface-visibility: hidden; }
+.coin-face svg { display: block; width: 100%; height: 100%; }
+.coin-back { transform: rotateY(180deg); }
