@@ -1,0 +1,228 @@
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;800;900&display=swap" rel="stylesheet">
+<style>
+  .du{--pandan:#3CC46B;--pandan-d:#2A9A51;--telang:#1E9BF0;--telang-d:#1478C2;--telang-bg:#DDF1FF;--telang-line:#8CCBF5;
+      --sambal:#FF4D4F;--sambal-d:#D93A3C;--sambal-bg:#FFE5E5;--kunyit:#FFC21A;--kunyit-d:#E0A100;--ubi:#A46BF5;--ubi-d:#7E4BD1;
+      --ink:#2F3B45;--muted:#77838C;--line:#E3E7EA;--paper:#fff;font-family:'Nunito',system-ui,sans-serif;color:var(--ink)}
+  .du-row{display:flex;flex-wrap:wrap;gap:32px;justify-content:center;align-items:flex-start;margin-top:.5rem}
+  .du-col{display:flex;flex-direction:column;gap:12px;align-items:center}
+  .du-cap{font-size:14px;font-weight:800;color:var(--text-secondary)}
+  .du-phone{width:304px;height:640px;background:var(--paper);border:3px solid var(--ink);border-radius:38px;padding:18px 16px;
+      display:flex;flex-direction:column;gap:14px;overflow:hidden;position:relative;text-align:left;line-height:1.3}
+
+  .du-top{display:flex;align-items:center;gap:10px}
+  .du-x{width:16px;height:16px;flex:none;color:#AFB8BF}
+  .du-bar{flex:1;height:16px;border-radius:99px;background:var(--line);overflow:hidden}
+  .du-fill{height:100%;border-radius:99px;background:var(--pandan);position:relative}
+  .du-fill::after{content:'';position:absolute;left:6px;right:6px;top:4px;height:4px;border-radius:9px;background:rgba(255,255,255,.35)}
+  .du-stat{display:flex;align-items:center;gap:4px;font-weight:900;font-size:15px}
+  .du-stat svg{width:20px;height:20px}
+  .du-heart{color:var(--sambal)}
+  .du-coin-s{color:var(--kunyit-d)}
+
+  .du-title{font-size:21px;font-weight:900;margin:0;letter-spacing:-.01em}
+  .du-sub{margin:-6px 0 0;font-size:15px;font-weight:700;color:var(--muted)}
+  .du-notif{display:flex;align-items:center;gap:10px;border:2px solid var(--line);border-radius:14px;padding:7px 10px;font-size:13px;font-weight:700;color:var(--muted)}
+  .du-notif b{color:var(--ink)}
+  .du-notif svg{width:36px;height:36px;border-radius:9px;flex:none}
+  .du-scene{display:flex;align-items:flex-end;gap:6px}
+  .du-cat{width:84px;height:92px;flex:none;overflow:visible}
+  .du-bubble{position:relative;border:2px solid var(--line);border-radius:16px;padding:10px 12px;font-size:15px;font-weight:800;margin-bottom:20px;background:#fff}
+  .du-bubble::before,.du-bubble::after{content:'';position:absolute;bottom:14px;border-style:solid;border-width:8px 10px 8px 0;border-color:transparent var(--line) transparent transparent}
+  .du-bubble::before{left:-11px}
+  .du-bubble::after{left:-7px;border-right-color:#fff}
+
+  .du-foot{margin-top:auto;display:flex;flex-direction:column;gap:10px}
+  .du-opt{all:unset;box-sizing:border-box;width:100%;border:2px solid var(--line);border-bottom-width:4px;border-radius:16px;padding:12px 14px;
+      font:800 16px/1.25 'Nunito',system-ui,sans-serif;color:var(--ink);cursor:pointer;display:flex;justify-content:space-between;gap:8px;background:#fff}
+  .du-opt span{color:var(--muted)}
+  .du-opt.sel{background:var(--telang-bg);border-color:var(--telang-line);color:var(--telang-d)}
+  .du-opt.sel span{color:var(--telang-d)}
+  .du-btn{all:unset;box-sizing:border-box;width:100%;text-align:center;border-radius:16px;padding:13px;margin-top:4px;
+      font:900 15px/1 'Nunito',system-ui,sans-serif;letter-spacing:.06em;text-transform:uppercase;color:#fff;background:var(--pandan);
+      border-bottom:4px solid var(--pandan-d);cursor:pointer}
+  .du-btn:active{transform:translateY(2px);border-bottom-width:2px}
+  .du-btn.red{background:var(--sambal);border-bottom-color:var(--sambal-d)}
+  .du-btn.ghost{background:#fff;color:var(--telang-d);border:2px solid var(--line);border-bottom-width:4px;margin-top:0}
+  .du-opt:focus-visible,.du-btn:focus-visible{outline:3px solid var(--telang);outline-offset:2px}
+
+  .du-stage{flex:1;display:flex;align-items:center;justify-content:center;gap:22px;perspective:600px}
+  .du-coin{width:64px;height:64px;position:relative;transform-style:preserve-3d;transform:rotateY(180deg)}
+  .du-face{position:absolute;inset:0;backface-visibility:hidden}
+  .du-face svg{display:block;width:100%;height:100%}
+  .du-back{transform:rotateY(180deg)}
+  .du-sheet{margin:0 -16px -18px;padding:16px 16px 20px;background:var(--sambal-bg);display:flex;flex-direction:column;gap:10px;border-radius:0 0 35px 35px}
+  .du-sheet h3{margin:0;display:flex;align-items:center;gap:8px;font-size:22px;font-weight:900;color:var(--sambal-d)}
+  .du-sheet p{margin:0;font-size:15px;font-weight:800;color:var(--sambal-d)}
+  .du-grade{background:#fff;border:2px solid var(--pandan);border-bottom-width:4px;border-radius:14px;padding:9px 12px;font-size:14px;font-weight:700;color:var(--muted)}
+  .du-grade b{display:block;color:var(--pandan-d);font-size:15px;font-weight:900}
+  .du-luck{font-size:14px;font-weight:900;color:var(--ubi-d)}
+
+  .du-done{font-size:24px;font-weight:900;margin:0;text-align:center}
+  .du-catc{width:64px;height:70px;align-self:center}
+  .du-arch{text-align:center;margin:0;font-size:14px;font-weight:800;color:var(--muted)}
+  .du-arch b{display:block;font-size:22px;font-weight:900;color:var(--ink)}
+  .du-tiles{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .du-tile{border:2px solid var(--c);border-radius:14px;overflow:hidden;text-align:center}
+  .du-tile i{display:block;font-style:normal;background:var(--c);color:var(--t);font-size:12px;font-weight:900;padding:3px 0}
+  .du-tile b{display:block;padding:6px 0;font-size:19px;font-weight:900;color:var(--v)}
+  .du-chart{border:2px solid var(--line);border-radius:16px;padding:8px 10px 6px}
+  .du-chart small{font-size:12px;font-weight:800;color:var(--muted)}
+  .du-chart svg{display:block;width:100%;height:66px;margin-top:4px}
+  .du-ax{position:relative;height:14px;font-size:11px;font-weight:800;color:var(--muted)}
+  .du-ax span{position:absolute;top:0}
+
+  .du-legend{display:flex;flex-wrap:wrap;justify-content:center;gap:10px 24px;margin:1.75rem auto 0;max-width:980px;font-size:14px;color:var(--text-secondary)}
+  .du-sw{display:inline-flex;align-items:center;gap:8px}
+  .du-sw i{width:16px;height:16px;border-radius:5px}
+  .du-note{max-width:760px;margin:1rem auto 0;text-align:center;font-size:14px;color:var(--text-secondary)}
+
+  @media (prefers-reduced-motion:no-preference){
+    .du-blink{animation:du-blink 4s infinite;transform-box:fill-box;transform-origin:center}
+    @keyframes du-blink{0%,92%,100%{transform:scaleY(1)}95%{transform:scaleY(.1)}}
+    .du-coin{animation:du-flip 5s cubic-bezier(.2,.7,.25,1) infinite}
+    @keyframes du-flip{0%{transform:translateY(0) rotateY(0)}14%{transform:translateY(-44px) rotateY(1000deg)}28%,100%{transform:translateY(0) rotateY(1980deg)}}
+    .du-sheet{animation:du-sheet 5s cubic-bezier(.2,.8,.2,1) infinite}
+    @keyframes du-sheet{0%,28%{transform:translateY(105%)}36%,100%{transform:translateY(0)}}
+    .du-line{stroke-dasharray:420;animation:du-draw 5s ease-out infinite}
+    @keyframes du-draw{0%{stroke-dashoffset:420}35%,100%{stroke-dashoffset:0}}
+  }
+</style>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="du-catbody" viewBox="0 0 100 110">
+      <path d="M80 96 C98 92 99 72 88 66" stroke="#F08A2C" stroke-width="9" fill="none" stroke-linecap="round"/>
+      <path d="M24 108 C20 80 30 66 50 66 C70 66 80 80 76 108 Z" fill="#FF9A3C"/>
+      <ellipse cx="50" cy="95" rx="15" ry="12" fill="#FFE3C4"/>
+      <ellipse cx="37" cy="107" rx="8" ry="4.5" fill="#FFB56B"/>
+      <ellipse cx="63" cy="107" rx="8" ry="4.5" fill="#FFB56B"/>
+      <path d="M17 36 L21 7 Q23 2 28 5 L45 22 Z" fill="#FF9A3C"/>
+      <path d="M83 36 L79 7 Q77 2 72 5 L55 22 Z" fill="#FF9A3C"/>
+      <path d="M23 27 L25 12 L35 21 Z" fill="#FFB3B3"/>
+      <path d="M77 27 L75 12 L65 21 Z" fill="#FFB3B3"/>
+      <ellipse cx="50" cy="42" rx="36" ry="30" fill="#FF9A3C"/>
+      <path d="M44 14 Q45 19 44 24 M50 13 V24 M56 14 Q55 19 56 24" stroke="#E0731C" stroke-width="3.5" stroke-linecap="round" fill="none"/>
+      <ellipse cx="50" cy="55" rx="16" ry="11" fill="#FFE3C4"/>
+      <path d="M46 50 H54 L50 54 Z" fill="#FF7A8A"/>
+    </symbol>
+    <symbol id="du-heart" viewBox="0 0 24 24"><path d="M12 21s-8.5-5.2-10.4-10.6C.3 6.6 3 3 6.8 3c2.2 0 4 1.2 5.2 3 1.2-1.8 3-3 5.2-3C21 3 23.7 6.6 22.4 10.4 20.5 15.8 12 21 12 21z" fill="currentColor"/></symbol>
+    <symbol id="du-coinic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="#FFC21A"/><circle cx="12" cy="12" r="6.5" fill="none" stroke="#E0A100" stroke-width="2.2"/></symbol>
+    <symbol id="du-xic" viewBox="0 0 18 18"><path d="M3 3l12 12M15 3L3 15" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></symbol>
+  </defs>
+</svg>
+
+<div class="du">
+  <h2>Duolingo style, take three</h2>
+  <p class="subtitle">Three moments from one run: a dilemma and a bet that went rugi (Jaksel), then the end report (English).</p>
+
+  <div class="du-row">
+
+    <!-- 1. Dilemma, Jaksel -->
+    <div class="du-col">
+      <div class="du-phone">
+        <div class="du-top">
+          <svg class="du-x"><use href="#du-xic"/></svg>
+          <div class="du-bar"><div class="du-fill" style="width:13%"></div></div>
+          <span class="du-stat du-heart"><svg><use href="#du-heart"/></svg>64</span>
+          <span class="du-stat du-coin-s"><svg><use href="#du-coinic"/></svg>42jt</span>
+        </div>
+        <p class="du-title">Umur 27. Pilih langkah lo.</p>
+        <div class="du-notif">
+          <svg viewBox="0 0 36 36" aria-hidden="true"><rect width="36" height="36" fill="#D6E6F5"/><path d="M0 28 H36 V36 H0 Z" fill="#E8DCC8"/><g fill="#C8342F"><path d="M7 10 Q18 7 29 10 V13 Q18 10 7 13 Z"/><rect x="10" y="16" width="16" height="2.5"/><rect x="11" y="12" width="3" height="20"/><rect x="22" y="12" width="3" height="20"/></g></svg>
+          <span><b>dindaaa.r</b> upload story dari Kyoto</span>
+        </div>
+        <div class="du-scene">
+          <svg class="du-cat" viewBox="0 0 100 110" aria-hidden="true"><use href="#du-catbody"/>
+            <g class="du-blink"><ellipse cx="36" cy="40" rx="9" ry="10" fill="#fff"/><ellipse cx="64" cy="40" rx="9" ry="10" fill="#fff"/><circle cx="40" cy="41" r="5" fill="#2F3B45"/><circle cx="68" cy="41" r="5" fill="#2F3B45"/><circle cx="42" cy="39" r="1.8" fill="#fff"/><circle cx="70" cy="39" r="1.8" fill="#fff"/></g>
+            <path d="M50 54 Q47 59 44 57 M50 54 Q53 59 56 57" stroke="#2F3B45" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+          </svg>
+          <div class="du-bubble">Grup chat udah mau booking Jepang buat April. Rp18 jt per orang. Lo ikut gak?</div>
+        </div>
+        <div class="du-foot">
+          <button class="du-opt">Gas, healing itu penting</button>
+          <button class="du-opt sel">Bali aja deh <span>Rp6 jt</span></button>
+          <button class="du-opt">Skip dulu, mau nabung</button>
+          <button class="du-btn">Pilih</button>
+        </div>
+      </div>
+      <div class="du-cap">Dilemma: pick, then confirm</div>
+    </div>
+
+    <!-- 2. Outcome sheet, Jaksel -->
+    <div class="du-col">
+      <div class="du-phone">
+        <div class="du-top">
+          <svg class="du-x"><use href="#du-xic"/></svg>
+          <div class="du-bar"><div class="du-fill" style="width:24%"></div></div>
+          <span class="du-stat du-heart"><svg><use href="#du-heart"/></svg>58</span>
+          <span class="du-stat du-coin-s"><svg><use href="#du-coinic"/></svg>115jt</span>
+        </div>
+        <p class="du-title">Umur 31. Hasil taruhan lo.</p>
+        <p class="du-sub">Lo naruh Rp10 jt di kedai kopi susu punya temen lo.</p>
+        <div class="du-stage">
+          <svg class="du-cat" viewBox="0 0 100 110" aria-hidden="true"><use href="#du-catbody"/>
+            <ellipse cx="36" cy="39" rx="10" ry="11" fill="#fff"/><ellipse cx="64" cy="39" rx="10" ry="11" fill="#fff"/><circle cx="36" cy="40" r="3.2" fill="#2F3B45"/><circle cx="64" cy="40" r="3.2" fill="#2F3B45"/>
+            <ellipse cx="50" cy="60" rx="4.5" ry="5.5" fill="#2F3B45"/>
+            <path d="M86 20 q5 7 0 10.5 q-5 -3.5 0 -10.5z" fill="#8FD0FF"/>
+          </svg>
+          <div class="du-coin" aria-hidden="true">
+            <div class="du-face"><svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="48" fill="#E0A100"/><circle cx="50" cy="50" r="43" fill="#FFC21A"/><circle cx="38" cy="44" r="5" fill="#2F3B45"/><circle cx="62" cy="44" r="5" fill="#2F3B45"/><path d="M36 58 Q50 70 64 58" stroke="#2F3B45" stroke-width="5" fill="none" stroke-linecap="round"/></svg></div>
+            <div class="du-face du-back"><svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="48" fill="#E0A100"/><circle cx="50" cy="50" r="43" fill="#FFC21A"/><circle cx="38" cy="46" r="5" fill="#2F3B45"/><circle cx="62" cy="46" r="5" fill="#2F3B45"/><path d="M37 66 Q50 56 63 66" stroke="#2F3B45" stroke-width="5" fill="none" stroke-linecap="round"/></svg></div>
+          </div>
+        </div>
+        <div class="du-sheet">
+          <h3><svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true"><circle cx="15" cy="15" r="15" fill="#FF4D4F"/><path d="M10 10l10 10M20 10L10 20" stroke="#fff" stroke-width="3.4" stroke-linecap="round"/></svg>Rugi, -Rp10 jt</h3>
+          <p>Kedainya tutup setelah 8 bulan.</p>
+          <div class="du-grade"><b>Keputusan lo: masuk akal</b>Dana darurat aman 6 bulan, dan lo cuma naruh 8% duit lo.</div>
+          <div class="du-luck">Yang ini apes, bukan salah lo.</div>
+          <button class="du-btn red">Lanjut</button>
+        </div>
+      </div>
+      <div class="du-cap">Outcome: rugi, but a good call</div>
+    </div>
+
+    <!-- 3. End report, English -->
+    <div class="du-col">
+      <div class="du-phone">
+        <p class="du-done">You made it to 60</p>
+        <svg class="du-catc" viewBox="0 0 100 110" aria-hidden="true"><use href="#du-catbody"/>
+          <path d="M28 42 Q36 33 44 42 M56 42 Q64 33 72 42" stroke="#2F3B45" stroke-width="3.6" fill="none" stroke-linecap="round"/>
+          <path d="M42 56 Q50 66 58 56 Z" fill="#2F3B45"/>
+          <ellipse cx="27" cy="52" rx="5" ry="3" fill="#FF8A8A" opacity=".6"/><ellipse cx="73" cy="52" rx="5" ry="3" fill="#FF8A8A" opacity=".6"/>
+        </svg>
+        <p class="du-arch">Your Lifeworth<b>Rich but tired</b></p>
+        <div class="du-tiles">
+          <div class="du-tile" style="--c:#FFC21A;--t:#2F3B45;--v:#B88400"><i>Net worth</i><b>Rp8.4B</b></div>
+          <div class="du-tile" style="--c:#1478C2;--t:#fff;--v:#1478C2"><i>Wellbeing</i><b>41</b></div>
+          <div class="du-tile" style="--c:#3CC46B;--t:#2F3B45;--v:#2A9A51"><i>Decisions</i><b>B+</b></div>
+          <div class="du-tile" style="--c:#7E4BD1;--t:#fff;--v:#7E4BD1"><i>Luck</i><b>Bottom 30%</b></div>
+        </div>
+        <div class="du-chart">
+          <small>Net worth, age 22 to 60</small>
+          <svg viewBox="0 0 260 80" preserveAspectRatio="none" aria-hidden="true">
+            <path d="M0 76 L28 74 L56 70 L84 62 L100 54 L109 68 L124 60 L154 48 L186 36 L222 22 L260 8 V80 H0 Z" fill="#FFF3CC"/>
+            <path class="du-line" d="M0 76 L28 74 L56 70 L84 62 L100 54 L109 68 L124 60 L154 48 L186 36 L222 22 L260 8" fill="none" stroke="#E0A100" stroke-width="3.5" stroke-linejoin="round" stroke-linecap="round" vector-effect="non-scaling-stroke"/>
+            <circle cx="109" cy="68" r="5" fill="#FF4D4F" stroke="#fff" stroke-width="2"/>
+          </svg>
+          <div class="du-ax"><span style="left:0">22</span><span style="left:42%;transform:translateX(-50%);color:#D93A3C">crash at 38</span><span style="right:0">60</span></div>
+        </div>
+        <div class="du-foot">
+          <button class="du-btn">Share my Lifeworth</button>
+          <button class="du-btn ghost">Challenge a friend</button>
+        </div>
+      </div>
+      <div class="du-cap">End report, made to be shared</div>
+    </div>
+
+  </div>
+
+  <div class="du-legend">
+    <span class="du-sw"><i style="background:#3CC46B"></i>Pandan: go, untung</span>
+    <span class="du-sw"><i style="background:#1E9BF0"></i>Telang: your pick</span>
+    <span class="du-sw"><i style="background:#FF4D4F"></i>Sambal: rugi</span>
+    <span class="du-sw"><i style="background:#FFC21A"></i>Kunyit: money</span>
+    <span class="du-sw"><i style="background:#A46BF5"></i>Ubi: luck</span>
+  </div>
+  <p class="du-note">Rounded heavy type, chunky press-down buttons and a feedback sheet that slides up, the way Duolingo does it. The mascot is Oren, a kucing oren, not an owl. Depth comes from the thick bottom edges, never shadows or gradients.</p>
+</div>
