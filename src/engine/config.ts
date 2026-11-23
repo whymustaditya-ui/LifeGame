@@ -46,3 +46,19 @@ export const FOMO_FACTOR: ByTemperament = { anxious: 1.2, impulsive: 1.3, steady
 export const CARD_CHANCE: readonly number[] = [0.55, 0.2];
 export const MAX_CARDS_PER_YEAR = 2;
 export const LUCK_CAREER = { promotion: 20, fired: -40, rehired: 10 } as const;
+
+// Birth lottery (spec 5.2). Picks follow the listed key order as cumulative thresholds.
+export const FAMILY_ODDS: Readonly<Record<FamilyMoney, number>> = { poor: 0.35, middle: 0.5, rich: 0.15 };
+export const EDUCATION_ODDS: Readonly<Record<FamilyMoney, Readonly<Record<Education, number>>>> = {
+  poor: { highschool: 0.6, diploma: 0.25, degree: 0.15 },
+  middle: { highschool: 0.3, diploma: 0.3, degree: 0.4 },
+  rich: { highschool: 0.1, diploma: 0.15, degree: 0.75 },
+};
+export const PARENTS_ODDS: Readonly<Record<FamilyMoney, number>> = { poor: 0.7, middle: 0.35, rich: 0.05 };
+export const TEMPERAMENT_ODDS: Readonly<Record<Temperament, number>> = { anxious: 1 / 3, impulsive: 1 / 3, steady: 1 / 3 };
+export const START_LUCK = {
+  family: { poor: -30, middle: 0, rich: 30 },
+  education: { highschool: -15, diploma: 0, degree: 10 },
+  parents: -15,
+  temperament: { anxious: -5, impulsive: -5, steady: 5 },
+} as const;
