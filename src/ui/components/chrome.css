@@ -1,0 +1,39 @@
+.icon-btn {
+  appearance: none; border: 0; background: none; color: var(--muted); cursor: pointer; flex: none;
+  min-width: 44px; min-height: 44px; display: inline-flex; align-items: center; justify-content: center;
+  margin: -14px; padding: 0; border-radius: 12px;
+}
+
+.topbar { display: flex; align-items: center; gap: 10px; min-height: 44px; }
+.topbar-menu { margin: 0 -8px 0 -14px; }
+.lifebar { flex: 1; min-width: 40px; height: 16px; border-radius: 99px; background: var(--line); overflow: hidden; }
+.lifebar-fill { height: 100%; border-radius: 99px; background: var(--pandan); position: relative; transition: width 0.4s ease-out; }
+.lifebar-fill::after {
+  content: ''; position: absolute; left: 6px; right: 6px; top: 4px; height: 4px; border-radius: 9px;
+  background: rgba(255, 255, 255, 0.35);
+}
+.topbar-stat { display: inline-flex; align-items: center; gap: 4px; font-weight: 900; font-size: 15px; color: var(--ink); white-space: nowrap; flex: none; }
+.topbar-money {
+  appearance: none; border: 0; background: none; cursor: pointer; font-family: var(--font);
+  min-height: 44px; padding: 0 2px; border-radius: 12px;
+}
+
+.sheet-layer { position: fixed; inset: 0; z-index: 10; display: flex; flex-direction: column; justify-content: flex-end; }
+.sheet-backdrop { position: absolute; inset: 0; background: rgba(47, 59, 69, 0.45); }
+.sheet {
+  position: relative; width: 100%; max-width: 480px; margin: 0 auto; max-height: 90dvh; overflow-y: auto;
+  background: var(--paper); border-radius: 24px 24px 0 0; border-top: 2px solid var(--line);
+  padding: 16px 16px max(20px, env(safe-area-inset-bottom)); display: flex; flex-direction: column; gap: 12px;
+}
+.sheet-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.sheet-head .icon-btn { margin: -8px -10px -8px 0; }
+.sheet-title { margin: 0; font-size: 21px; font-weight: 900; }
+.sheet-note { margin: 0; font-size: 13px; color: var(--muted-text); text-align: center; }
+
+.wallet { margin: 0; display: flex; flex-direction: column; }
+.wallet-row { display: flex; justify-content: space-between; gap: 12px; padding: 10px 0; border-bottom: 2px solid var(--line); }
+.wallet-row:first-child { font-weight: 900; font-size: 17px; }
+.wallet-row:last-child { border-bottom: 0; }
+.wallet-row dt { color: var(--muted-text); }
+.wallet-row:first-child dt { color: var(--ink); }
+.wallet-row dd { margin: 0; text-align: right; font-weight: 800; }
