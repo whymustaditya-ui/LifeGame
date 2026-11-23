@@ -20,6 +20,8 @@ export default defineConfig({
           environment: 'jsdom',
           include: ['src/ui/**/*.test.{ts,tsx}'],
           setupFiles: ['src/ui/test/setup.ts'],
+          // Vitest stubs CSS (even ?raw) unless it is processed; the contrast test reads tokens.css.
+          css: { include: [/tokens\.css/] },
         },
       },
     ],

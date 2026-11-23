@@ -1,0 +1,13 @@
+.tiles { border: 0; margin: 0; padding: 0; min-width: 0; display: flex; flex-direction: column; gap: 10px; }
+
+.tile {
+  display: flex; justify-content: space-between; align-items: center; gap: 8px; min-height: 48px;
+  border: 2px solid var(--line); border-bottom-width: var(--edge); border-radius: var(--radius);
+  padding: 12px 14px; font: 800 16px/1.25 var(--font); color: var(--ink); background: var(--paper); cursor: pointer;
+}
+.tile-note { color: var(--muted-text); font-weight: 700; flex: none; }
+
+/* Picked: Telang fill and border; text stays Ink for AA (Telang dark on its tint is 4.0:1). */
+.tile:has(input:checked) { background: var(--telang-bg); border-color: var(--telang-line); }
+.tile:has(input:checked) .tile-note { color: var(--ink); }
+.tile:has(input:focus-visible) { outline: 3px solid var(--telang); outline-offset: 2px; }
