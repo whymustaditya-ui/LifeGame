@@ -1,0 +1,27 @@
+.report-title { margin: 0; text-align: center; font-size: 24px; font-weight: 900; }
+.report .oren { align-self: center; }
+.archetype-kicker { margin: 0; text-align: center; font-size: 14px; font-weight: 800; color: var(--muted-text); }
+.archetype { margin: -10px 0 0; text-align: center; font-size: 22px; font-weight: 900; }
+
+.stat-tiles { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.stat-tile { border: 2px solid var(--c); border-radius: 14px; overflow: hidden; text-align: center; min-width: 0; }
+.stat-tile-head { display: block; background: var(--c); color: var(--t); font-size: 12px; font-weight: 900; padding: 3px 0; }
+.stat-tile-value { display: block; padding: 6px 4px 0; font-size: 19px; font-weight: 900; color: var(--v); }
+.stat-tile-sub { display: block; padding: 0 4px 6px; font-size: 13px; color: var(--muted-text); }
+.tile-networth { --c: var(--kunyit); --t: var(--ink); --v: var(--kunyit-text); }
+.tile-wellbeing { --c: var(--telang-d); --t: var(--paper); --v: var(--telang-d); }
+.tile-decisions { --c: var(--pandan); --t: var(--ink); --v: var(--pandan-d); }
+.tile-luck { --c: var(--ubi-d); --t: var(--paper); --v: var(--ubi-d); }
+
+.report-line { margin: 0; font-size: 15px; font-weight: 800; }
+
+.chart { margin: 0; border: 2px solid var(--line); border-radius: var(--radius); padding: 8px 10px 6px; }
+.chart figcaption { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 4px 12px; }
+.chart small { font-size: 12px; font-weight: 800; color: var(--muted-text); }
+.chart .chart-exact { color: var(--ink); }
+.chart svg { display: block; width: 100%; height: 66px; margin-top: 4px; }
+.chart-axis { position: relative; height: 14px; font-size: 11px; font-weight: 800; color: var(--muted-text); }
+.chart-axis span { position: absolute; top: 0; left: 0; }
+.chart-axis .chart-end { left: auto; right: 0; }
+.chart-axis .chart-drop { transform: translateX(-50%); color: var(--sambal-d); white-space: nowrap; }
+.chart-legend { display: block; margin-top: 2px; }
