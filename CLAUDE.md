@@ -18,7 +18,7 @@ Owner: Bro (Aditya). The workspace rules in the parent `CLAUDE.md` files apply: 
 | Plan | Scope | Status |
 |-|-|-|
 | 1 Engine | Pure TypeScript game logic, sample cards, CLI simulator, percentile tables | Done. Merged to main 2026-11-23. 73 tests, 95% coverage |
-| 2 Game UI | Vite + React app built on the engine: Duolingo-style screens from mockup v3, Oren the mascot, Motion animation, EN and Jaksel toggle, wallet sheet (Dompet), report with charts, autosave | Next |
+| 2 Game UI | Vite + React app built on the engine: Duolingo-style screens from mockup v3, Oren the mascot, Motion animation, EN and Jaksel toggle, wallet sheet (Dompet), report with charts, autosave | Done on branch `feat/game-ui` 2026-11-23 (plan `docs/superpowers/plans/2026-11-23-lifeworth-game-ui.md`). 174 tests, 97% line coverage, 131 kB gzip JS |
 | 3 Content and tuning | About 30 dilemmas, 25 luck events and 15 feed posts in both languages with owner-reviewed Jaksel, balancing, 100,000-run percentile tables | After Plan 2 |
 | 4 Share, PWA, release | 1080 by 1920 share card, challenge links (`/c/<code>`), installable PWA, Playwright end-to-end, Lighthouse 90+, static hosting (Cloudflare Pages or Vercel) | Last. This is what makes it live |
 
@@ -26,33 +26,43 @@ Owner: Bro (Aditya). The workspace rules in the parent `CLAUDE.md` files apply: 
 
 | Command | What it does |
 |-|-|
-| `npm test` | Runs every test |
-| `npm run coverage` | Tests with coverage, 80% minimum on `src/engine` |
-| `npm run typecheck` | Type-checks the engine and scripts |
+| `npm run dev` | Plays the game locally (Vite) |
+| `npm run build` | Typechecks, then builds to `dist/` |
+| `npm run preview` | Serves the built `dist/` |
+| `npm test` | Runs every test (Vitest projects `logic` in node, `ui` in jsdom) |
+| `npm run coverage` | Tests with coverage, 80% minimum on `src/engine`, `src/app` and `src/ui` |
+| `npm run typecheck` | Type-checks the engine, app logic and scripts (no DOM), then the UI |
 | `npm run sim -- --seed demo --style balanced` | Plays one full life in the terminal. Styles: frugal, balanced, yolo, random |
 | `npm run percentiles -- --runs 2000` | Regenerates `src/engine/data/percentiles.json` |
 
 ## Architecture
 
 - `src/engine/`: pure, deterministic TypeScript with no React, DOM or Node imports. Every function returns new objects. Every random number comes from `draw(seed, keyOf(age, stream, id))`, never `Math.random`, so a run replays exactly and saves to localStorage as JSON.
-- `src/content/`: cards as typed data with copy in `en` and `jaksel`. `validateContent` must return an empty list for any content set.
+- `src/content/`: cards as typed data with copy in `en` and `jaksel`, plus an optional `moment` (the phone notification a card renders as). `validateContent` must return an empty list for any content set. `CONTENT` in `index.ts` is what the game plays; `titles.ts` maps the engine's title keys to job titles.
+- `src/app/`: React-free logic. `flow.ts` is the screen state machine over a `Run` (lottery, card, outcome, recap, report; quiet years fast-forward into one recap). `save.ts` versions saves (`lifeworth.save`, `SAVE_VERSION`) and drops anything it cannot trust. `store.ts` is the Zustand vanilla store: autosave, and actions that ignore a tap on the wrong screen.
+- `src/ui/`: React 19 screens and components. All UI copy is in `i18n/strings.ts` (both languages, typed); money formatting in `i18n/format.ts`. Motion only through `m.*` inside `LazyMotion strict` (`motion.tsx`). Colours are tokens in `styles/tokens.css`, guarded by an AA contrast test.
 - `scripts/`: the CLI simulator and the percentile generator.
 - Grading only ever sees `VisibleState` (what a player could check in real life). Luck is actual minus expected for every roll.
 
 ## Carry-forward requirements from the Plan 1 final review
 
-Plan 2 must:
-- Version saved games and start a fresh run on any load error. `deserialize` only checks the shape.
-- Show wellbeing as a feeling (Seger, Oke, Capek, Burnout), never a number, until the report.
-- Read `run.last` before calling `endYear`, which clears it.
+Plan 2 handled all three of its items (versioned saves, wellbeing as a feeling, `run.last` read before `endYear`).
 
 Plan 3 must:
+- Write per-choice reason copy for the grade box; today its second line is a generic "at the time" situation line.
+- Give every card a `moment`.
+- Settle the owner review of the UI Jaksel strings (`src/ui/i18n/strings.ts`), archetype names, sample moments and job titles, if not already done.
 - Add lifestyle creep cards (moving out, a car, a wedding, kids, a KPR). Without them the median life ends near Rp6.9B, which is too rich.
 - Retune wellbeing so the resting point sits in Oke. Today anxious players rest at Capek.
 - Consider per-card keyed draws, so players on the same seed get the same random cards more often.
 - Extend `validateContent` to catch duplicate choice ids, NaN or non-positive weights, and roll odds outside 0 to 1.
 - Expose a Capek streak in `VisibleState` if a grading rule needs it.
 - Regenerate the percentile tables at 100,000 runs on the final content.
+
+Plan 4 notes:
+- The share and challenge buttons go above "Live another life" on the report. The nickname is already saved in the store.
+- Fonts are already self-hosted (`@fontsource/nunito`, latin 700 to 900). Keep the `LazyMotion strict` setup.
+- jsdom is pinned to 29 because this machine runs Node 24.13; jsdom 30+ needs Node 24.15.
 
 ## How we work
 
