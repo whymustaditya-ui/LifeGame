@@ -27,6 +27,20 @@ it('rejects anything it cannot trust', () => {
   ];
   for (const raw of bad) expect(decodeSave(raw, CONTENT)).toBeNull();
 });
+it('rejects outcome, recap and run shapes the screens would crash on', () => {
+  const outcome = JSON.parse(encodeSave({ locale: 'en', nickname: '', game: at('outcome') }));
+  const recap = JSON.parse(encodeSave({ locale: 'en', nickname: '', game: at('recap') }));
+  const run = JSON.parse(outcome.game.run);
+  const { debt: _debt, ...beforeNoDebt } = outcome.game.screen.before;
+  const bad = [
+    { ...outcome, game: { ...outcome.game, screen: { ...outcome.game.screen, before: beforeNoDebt } } },
+    { ...recap, game: { ...recap.game, screen: { name: 'recap', recap: { ...recap.game.screen.recap, level: 'sad' } } } },
+    { ...recap, game: { ...recap.game, screen: { name: 'recap', recap: { ...recap.game.screen.recap, event: 'won' } } } },
+    { ...recap, game: { ...recap.game, screen: { name: 'recap', recap: { ...recap.game.screen.recap, titleKey: 7 } } } },
+    { ...outcome, game: { ...outcome.game, run: JSON.stringify({ ...run, state: { ...run.state, fin: undefined } }) } },
+  ];
+  for (const raw of bad) expect(decodeSave(JSON.stringify(raw), CONTENT)).toBeNull();
+});
 it('rejects a save whose queued card no longer exists', () => {
   const raw = encodeSave({ locale: 'en', nickname: '', game: at('card') });
   expect(decodeSave(raw, CONTENT.filter((c) => c.id !== 'money_plan'))).toBeNull();

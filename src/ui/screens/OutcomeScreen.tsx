@@ -4,9 +4,9 @@ import { shownCard } from '../../app/flow';
 import { levelOf, toVisible, type DecisionScore } from '../../engine';
 import { CoinFlip } from '../art/CoinFlip';
 import { Oren, orenFor, type OrenExpression } from '../art/Oren';
-import { TopBar } from '../components/TopBar';
 import { describeOutcome, type Tone } from '../outcome/describe';
 import { useApp, useLocale, useStrings } from '../store';
+import { useTapGuard } from '../tap-guard';
 import './screens.css';
 
 /** The sheet waits for the coin to land, as in mockup v3. */
@@ -29,6 +29,7 @@ export function OutcomeScreen() {
   const s = useStrings();
   const reduce = useReducedMotion();
   const focusRef = useRef<HTMLElement>(null);
+  const guard = useTapGuard(game?.screen);
 
   useEffect(() => {
     focusRef.current?.focus();
@@ -47,7 +48,6 @@ export function OutcomeScreen() {
 
   return (
     <section className="screen">
-      <TopBar />
       <h1 className="screen-title">{title}</h1>
       <p className="screen-sub">{sub}</p>
       <div className="stage">
@@ -76,7 +76,7 @@ export function OutcomeScreen() {
           </div>
         )}
         {view.luckLine && <p className="luck-line">{view.luckLine}</p>}
-        <button type="button" className={view.tone === 'bad' ? 'btn btn-danger' : 'btn'} onClick={leaveOutcome}>
+        <button type="button" className={view.tone === 'bad' ? 'btn btn-danger' : 'btn'} onClick={guard(leaveOutcome)}>
           {s.common.continue}
         </button>
       </m.section>

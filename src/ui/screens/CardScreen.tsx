@@ -5,9 +5,9 @@ import { orenFor } from '../art/Oren';
 import { ChoiceList } from '../components/ChoiceList';
 import { MomentLine } from '../components/MomentLine';
 import { OrenSays } from '../components/OrenSays';
-import { TopBar } from '../components/TopBar';
 import type { Strings } from '../i18n/strings';
 import { useApp, useLocale, useStrings } from '../store';
+import { useTapGuard } from '../tap-guard';
 import './screens.css';
 
 type ActionsProps = { card: Card; locale: Locale; s: Strings; onPick: (choiceId: string) => void };
@@ -34,6 +34,7 @@ export function CardScreen() {
   const pick = useApp((st) => st.pick);
   const locale = useLocale();
   const s = useStrings();
+  const guard = useTapGuard(game?.screen);
   const card = game ? shownCard(game, content) : null;
   if (!game || !card) return null;
 
@@ -43,7 +44,6 @@ export function CardScreen() {
 
   return (
     <section className="screen">
-      <TopBar />
       <h1 className="screen-title">{s.card.title[card.kind](state.age)}</h1>
       {isStruggling && (
         <p className="warning">
@@ -53,7 +53,7 @@ export function CardScreen() {
       )}
       {card.moment && <MomentLine moment={card.moment} />}
       <OrenSays expression={orenFor(level)}>{card.copy[locale]}</OrenSays>
-      <CardActions key={card.id} card={card} locale={locale} s={s} onPick={pick} />
+      <CardActions key={card.id} card={card} locale={locale} s={s} onPick={(id) => guard(() => pick(id))()} />
     </section>
   );
 }

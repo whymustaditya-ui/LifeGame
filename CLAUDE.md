@@ -18,7 +18,7 @@ Owner: Bro (Aditya). The workspace rules in the parent `CLAUDE.md` files apply: 
 | Plan | Scope | Status |
 |-|-|-|
 | 1 Engine | Pure TypeScript game logic, sample cards, CLI simulator, percentile tables | Done. Merged to main 2026-11-23. 73 tests, 95% coverage |
-| 2 Game UI | Vite + React app built on the engine: Duolingo-style screens from mockup v3, Oren the mascot, Motion animation, EN and Jaksel toggle, wallet sheet (Dompet), report with charts, autosave | Done on branch `feat/game-ui` 2026-11-23 (plan `docs/superpowers/plans/2026-11-23-lifeworth-game-ui.md`). 174 tests, 97% line coverage, 131 kB gzip JS |
+| 2 Game UI | Vite + React app built on the engine: Duolingo-style screens from mockup v3, Oren the mascot, Motion animation, EN and Jaksel toggle, wallet sheet (Dompet), report with charts, autosave | Done on branch `feat/game-ui` 2026-11-23 (plan `docs/superpowers/plans/2026-11-23-lifeworth-game-ui.md`). 177 tests, 97% line coverage, 131 kB gzip JS |
 | 3 Content and tuning | About 30 dilemmas, 25 luck events and 15 feed posts in both languages with owner-reviewed Jaksel, balancing, 100,000-run percentile tables | After Plan 2 |
 | 4 Share, PWA, release | 1080 by 1920 share card, challenge links (`/c/<code>`), installable PWA, Playwright end-to-end, Lighthouse 90+, static hosting (Cloudflare Pages or Vercel) | Last. This is what makes it live |
 

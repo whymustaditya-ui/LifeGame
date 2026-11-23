@@ -3,6 +3,7 @@ import { startLuckPercentile } from '../../engine';
 import { Oren } from '../art/Oren';
 import { rankBand } from '../i18n/format';
 import { useApp, useStrings } from '../store';
+import { useTapGuard } from '../tap-guard';
 import './screens.css';
 
 const STAGGER_SECONDS = 0.15;
@@ -13,6 +14,7 @@ export function Lottery() {
   const leaveLottery = useApp((st) => st.leaveLottery);
   const s = useStrings();
   const reduce = useReducedMotion();
+  const guard = useTapGuard(game?.screen);
   if (!game) return null;
 
   const start = game.run.state.start;
@@ -46,7 +48,7 @@ export function Lottery() {
       <p className="fact-line">{l.firstJob(start.startAge)}</p>
       <p className="luck-line">{l.luck(rankBand(startLuckPercentile(start.luckPoints)))}</p>
       <div className="actions">
-        <button type="button" className="btn" onClick={leaveLottery}>{l.go}</button>
+        <button type="button" className="btn" onClick={guard(leaveLottery)}>{l.go}</button>
       </div>
     </section>
   );

@@ -29,16 +29,35 @@ export function encodeSave(saved: Saved): string {
   return JSON.stringify({ v: SAVE_VERSION, locale: saved.locale, nickname: saved.nickname, game });
 }
 
+const LEVELS: readonly unknown[] = ['seger', 'oke', 'capek', 'burnout'];
+const EVENTS: readonly unknown[] = ['promoted', 'fired', 'rehired', null];
+const allNumbers = (o: Json, keys: readonly string[]): boolean => keys.every((k) => isNumber(o[k]));
+
+/** Every VisibleState field the outcome sheet reads. */
+function isVisibleState(v: unknown): boolean {
+  return isObject(v) && isObject(v.debt) && allNumbers(v, ['age', 'cash', 'emergencyMonths', 'index', 'netWorth', 'children'])
+    && allNumbers(v.debt, ['kpr', 'pinjol', 'cardDebt']) && typeof v.married === 'boolean';
+}
+
+function isRecap(r: unknown): boolean {
+  return isObject(r) && allNumbers(r, ['fromAge', 'toAge', 'netWorth', 'netWorthChange', 'monthlyIncome'])
+    && typeof r.employed === 'boolean' && typeof r.titleKey === 'string' && LEVELS.includes(r.level) && EVENTS.includes(r.event);
+}
+
+/** The engine's own check is shallow; the screens read these parts of the state. */
+function hasPlayableState(run: Run): boolean {
+  const s: unknown = run.state;
+  return isObject(s) && isObject(s.fin) && isObject(s.start) && isObject(s.career) && Array.isArray(s.history)
+    && Array.isArray(s.decisions) && isNumber(s.age) && isNumber(s.wellbeing) && isNumber(s.fin.cash);
+}
+
 function screenFits(screen: unknown, run: Run): screen is Screen {
   if (!isObject(screen)) return false;
   switch (screen.name) {
     case 'lottery': return !run.finished;
     case 'card': return !run.finished && run.queue.length > 0;
-    case 'outcome': return run.last !== null && isObject(screen.before) && isNumber(screen.before.netWorth);
-    case 'recap': {
-      const r = screen.recap;
-      return isObject(r) && isNumber(r.fromAge) && isNumber(r.toAge) && isNumber(r.netWorth) && isNumber(r.netWorthChange);
-    }
+    case 'outcome': return run.last !== null && isVisibleState(screen.before);
+    case 'recap': return isRecap(screen.recap);
     case 'report': return run.finished;
     default: return false;
   }
@@ -49,7 +68,7 @@ function decodeGame(raw: unknown, content: readonly Card[]): Game | null {
   const run = deserialize(raw.run);
   const ids = new Set(content.map((c) => c.id));
   const known = run.queue.every((id) => ids.has(id)) && (run.last === null || ids.has(run.last.cardId));
-  if (!known || !screenFits(raw.screen, run)) return null;
+  if (!known || !hasPlayableState(run) || !screenFits(raw.screen, run)) return null;
   return { run, screen: raw.screen, startWorth: raw.startWorth };
 }
 

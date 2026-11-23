@@ -1,7 +1,9 @@
 import { screen, waitFor } from '@testing-library/react';
 import type { UserEvent } from '@testing-library/user-event';
 import { expect, it } from 'vitest';
+import { startGame, type Game, type Recap } from '../app/flow';
 import { SAVE_KEY, memoryStore } from '../app/save';
+import { TAP_GUARD } from './tap-guard';
 import { atCard } from '../app/test-utils';
 import { CONTENT } from '../content';
 import { App } from './App';
@@ -71,6 +73,35 @@ it('answers a card and works the wallet with the keyboard alone', async () => {
   await user.keyboard('{Escape}');
   await waitFor(() => expect(screen.queryByRole('dialog')).not.toBeInTheDocument());
   expect(pill).toHaveFocus();
+});
+
+it('ignores the second tap of a double tap on Next, so the next card is seen', async () => {
+  TAP_GUARD.ms = 300;
+  try {
+    const g = startGame('app-double', CONTENT);
+    const recap: Recap = { fromAge: 22, toAge: 22, netWorth: 1, netWorthChange: 0, employed: true, titleKey: 'degree_0',
+      monthlyIncome: 1, level: 'oke', event: null };
+    const game: Game = { ...g, run: { ...g.run, queue: ['health_check'] }, screen: { name: 'recap', recap } };
+    const { store, user } = renderWithStore(<App />, { game });
+    // The player reads the recap first, then double-taps Next. A phone's second tap lands on whatever now
+    // sits under the finger: the new card's button.
+    await new Promise((r) => setTimeout(r, TAP_GUARD.ms + 50));
+    await user.click(screen.getByRole('button', { name: 'Next year' }));
+    await user.click(screen.getByRole('button', { name: 'See what happens' }));
+    expect(screen.getByRole('button', { name: 'See what happens' })).toBeInTheDocument();
+    expect(store.getState().game?.run.last).toBeNull();
+  } finally {
+    TAP_GUARD.ms = 0;
+  }
+});
+
+it('keeps one top bar across screens so net worth counts up instead of jumping', async () => {
+  const { user } = renderWithStore(<App />, { game: atCard('app-bar', CONTENT, 'japan_trip') });
+  const pill = screen.getByRole('button', { name: /Open wallet/ });
+  await user.click(screen.getByRole('radio', { name: /Book it/ }));
+  await user.click(screen.getByRole('button', { name: 'Choose' }));
+  expect(screen.getByRole('button', { name: 'Continue' })).toBeInTheDocument();
+  expect(pill).toBeInTheDocument();
 });
 
 it('shows the error screen when a card breaks, then starts over', async () => {

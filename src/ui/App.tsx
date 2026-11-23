@@ -1,5 +1,6 @@
 import { AnimatePresence } from 'motion/react';
 import { useEffect } from 'react';
+import { TopBar } from './components/TopBar';
 import { ErrorBoundary } from './ErrorBoundary';
 import { MotionRoot } from './motion';
 import { MenuPanel } from './panels/MenuPanel';
@@ -28,6 +29,14 @@ function CurrentScreen() {
   }
 }
 
+/** One top bar for the playing screens, so it persists across them and net worth can count up. */
+function PlayingTopBar() {
+  const screen = useApp((st) => st.game?.screen.name ?? null);
+  const isFailed = useApp((st) => st.failed);
+  const isPlaying = screen === 'card' || screen === 'outcome' || screen === 'recap';
+  return isPlaying && !isFailed ? <TopBar /> : null;
+}
+
 export function App() {
   const locale = useLocale();
   const panel = useApp((st) => st.panel);
@@ -42,6 +51,7 @@ export function App() {
     <MotionRoot>
       <main className="app" inert={panel !== null}>
         <ErrorBoundary onReset={quit} fallback={(reset) => <ErrorScreen onReset={reset} />}>
+          <PlayingTopBar />
           <CurrentScreen />
         </ErrorBoundary>
       </main>
