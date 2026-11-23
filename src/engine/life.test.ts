@@ -27,7 +27,7 @@ describe('lifeTick', () => {
   });
   it('fires only at burnout', () => {
     expect(lifeTick(makeState({ wellbeing: 30 }), rndOf({ fired: 0 })).state.career.employed).toBe(true);
-    const r = lifeTick(makeState({ wellbeing: 5 }), rndOf({ fired: 0.1 }));
+    const r = lifeTick(makeState({ wellbeing: 5, capekYears: 1 }), rndOf({ fired: 0.1 }));
     expect(r.state.career.employed).toBe(false);
     expect(r.state.career.monthlyIncome).toBe(0);
     expect(r.luck).toContainEqual(expect.objectContaining({ source: 'fired', expected: -10, actual: -40 }));
@@ -39,5 +39,11 @@ describe('lifeTick', () => {
   it('hits anxious unemployed players harder', () => {
     const s = makeState({ wellbeing: 55, start: { ...makeState().start, temperament: 'anxious' }, career: { ...makeState().career, employed: false, monthlyIncome: 0 } });
     expect(lifeTick(s, rndOf({})).state.wellbeing).toBe(40);
+  });
+});
+
+describe('lifeTick fixes from the final review', () => {
+  it('never fires in the first struggling year, before any warning', () => {
+    expect(lifeTick(makeState({ wellbeing: 5, capekYears: 0 }), rndOf({ fired: 0 })).state.career.employed).toBe(true);
   });
 });

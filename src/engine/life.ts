@@ -30,7 +30,8 @@ function driftPeople(p: People, level: WellbeingLevel): People {
 
 function employedStep(s: GameState, level: WellbeingLevel, rnd: Rnd): CareerStep {
   const c = s.career;
-  const fireP = FIRING_CHANCE[level];
+  // Warnings come before punishment (spec 5.6): firing needs a struggling year that already dealt a recovery card.
+  const fireP = s.capekYears >= 1 ? FIRING_CHANCE[level] : 0;
   const fireLuck: LuckEntry[] = [];
   if (fireP > 0) {
     const fired = rnd(keyOf(s.age, 'career', 'fired')) < fireP;

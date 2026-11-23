@@ -6,6 +6,7 @@ import type { Card, GameState, Trigger } from './types';
 /** One-shot flags a trigger consumes once its card is dealt. */
 const CLEARS: Partial<Record<Trigger, string>> = {
   career_change: 'career_changed', married: 'just_married', child: 'just_child', kpr: 'just_kpr',
+  family_insurance: 'family_insurance_due',
 };
 /** Flags a trigger sets once its card is dealt, so it never fires again. */
 const MARKS: Partial<Record<Trigger, string>> = {
@@ -25,7 +26,7 @@ export function dueTriggers(s: GameState): Trigger[] {
               : null;
   const insurance: Trigger | null = s.fin.insured ? null
     : s.career.employed && !f.first_insurance_seen ? 'first_job_insurance'
-      : f.just_married || f.just_child ? 'family_insurance'
+      : f.family_insurance_due ? 'family_insurance'
         : null;
   return [
     ...(level === 'capek' || level === 'burnout' ? (['capek'] as const) : []),

@@ -1,5 +1,5 @@
 import { applyWellbeingDelta } from './wellbeing';
-import type { Career, Effect, GameState, People } from './types';
+import type { Career, Effect, Finances, GameState, People } from './types';
 
 const clamp = (x: number): number => Math.min(100, Math.max(0, x));
 
@@ -25,27 +25,39 @@ function nextCareer(c: Career, e: Effect): Career {
   return { ...c, security, monthlyIncome: scaled };
 }
 
-/** Applies an effect immutably. Cash never goes below 0: the remainder becomes pinjol. */
-export function applyEffect(s: GameState, e: Effect): GameState {
-  const f = s.fin;
+/** Spending beyond cash sells index funds first and borrows pinjol only for the rest. Repaying shrinks the principal in proportion. */
+function nextFinances(f: Finances, e: Effect): Finances {
   const kpr = e.startKpr;
   const cashAfter = f.cash + (e.cash ?? 0) - (kpr?.downPayment ?? 0);
+  const indexBefore = f.index + (e.index ?? 0);
   const overdraft = Math.max(0, -cashAfter);
+  const fromIndex = Math.min(Math.max(0, indexBefore), overdraft);
+  const repaid = Math.min(f.pinjol, Math.max(0, -(e.pinjol ?? 0)));
+  const remaining = f.pinjol - repaid;
+  const principalLeft = f.pinjol > 0 ? Math.round((f.pinjolPrincipal * remaining) / f.pinjol) : 0;
+  const borrowed = Math.max(0, e.pinjol ?? 0) + (overdraft - fromIndex);
+  return {
+    ...f,
+    cash: Math.max(0, cashAfter),
+    index: indexBefore - fromIndex,
+    pinjol: remaining + borrowed,
+    pinjolPrincipal: principalLeft + borrowed,
+    cardDebt: f.cardDebt + (e.cardDebt ?? 0),
+    property: f.property + (kpr?.price ?? 0),
+    kpr: f.kpr + (kpr ? kpr.price - kpr.downPayment : 0),
+    kprMonthly: kpr ? kpr.monthly : f.kprMonthly,
+    insured: e.setInsured ?? f.insured,
+  };
+}
+
+/** Applies an effect immutably. Cash never goes below 0. */
+export function applyEffect(s: GameState, e: Effect): GameState {
   const marrying = e.setMarried === true && !s.married;
+  const firstChild = e.addChild === true && s.children === 0;
   const losingJob = e.setEmployed === false && s.career.employed;
   return {
     ...s,
-    fin: {
-      ...f,
-      cash: Math.max(0, cashAfter),
-      index: f.index + (e.index ?? 0),
-      pinjol: f.pinjol + (e.pinjol ?? 0) + overdraft,
-      cardDebt: f.cardDebt + (e.cardDebt ?? 0),
-      property: f.property + (kpr?.price ?? 0),
-      kpr: f.kpr + (kpr ? kpr.price - kpr.downPayment : 0),
-      kprMonthly: kpr ? kpr.monthly : f.kprMonthly,
-      insured: e.setInsured ?? f.insured,
-    },
+    fin: nextFinances(s.fin, e),
     career: nextCareer(s.career, e),
     wellbeing: e.wellbeing === undefined ? s.wellbeing : applyWellbeingDelta(s.wellbeing, e.wellbeing, s.start.temperament),
     people: nextPeople(s.people, e, marrying),
@@ -54,7 +66,8 @@ export function applyEffect(s: GameState, e: Effect): GameState {
     married: s.married || e.setMarried === true,
     children: s.children + (e.addChild ? 1 : 0),
     flags: withFlags(s.flags, [
-      marrying && 'just_married', e.addChild && 'just_child', losingJob && 'career_changed', kpr && 'just_kpr', e.setFlag,
+      marrying && 'just_married', e.addChild && 'just_child', (marrying || firstChild) && 'family_insurance_due',
+      losingJob && 'career_changed', e.startKpr && 'just_kpr', e.setFlag,
     ]),
   };
 }

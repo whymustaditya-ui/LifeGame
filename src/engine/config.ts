@@ -62,3 +62,6 @@ export const START_LUCK = {
   parents: -15,
   temperament: { anxious: -5, impulsive: -5, steady: 5 },
 } as const;
+
+/** Pinjol may grow to at most this multiple of what was borrowed, modelled on OJK capping total cost at the principal. */
+export const PINJOL_COST_CAP = 2;

@@ -12,7 +12,7 @@ describe('initial state and visible snapshot', () => {
     expect(s.luck[0]).toMatchObject({ source: 'start', actual: -65 });
   });
   it('computes net worth including debt', () => {
-    expect(netWorth({ cash: 10_000_000, index: 5_000_000, property: 0, kpr: 0, kprMonthly: 0, pinjol: 20_000_000, cardDebt: 0, insured: false })).toBe(-5_000_000);
+    expect(netWorth({ cash: 10_000_000, index: 5_000_000, property: 0, kpr: 0, kprMonthly: 0, pinjol: 20_000_000, pinjolPrincipal: 0, cardDebt: 0, insured: false })).toBe(-5_000_000);
   });
   it('sums monthly costs', () => {
     const s = makeState({ children: 1, start: { ...makeState().start, supportsParents: true }, fin: { ...makeState().fin, kprMonthly: 3_000_000 } });

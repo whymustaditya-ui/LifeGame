@@ -19,9 +19,10 @@ export function pickFor(style: Style): Picker {
     const list = choices as readonly [Choice, ...Choice[]];
     const cash = (c: Choice): number => c.effect(run.state).cash ?? 0;
     const mood = (c: Choice): number => c.effect(run.state).wellbeing ?? 0;
+    const liquid = (c: Choice): number => cash(c) - (c.effect(run.state).pinjol ?? 0);
     switch (style) {
       case 'frugal':
-        return pickBest(list, (a, b) => cash(a) > cash(b)).id;
+        return pickBest(list, (a, b) => liquid(a) > liquid(b)).id;
       case 'yolo':
         return pickBest(list, (a, b) => mood(a) > mood(b) || (mood(a) === mood(b) && cash(a) < cash(b))).id;
       case 'balanced':

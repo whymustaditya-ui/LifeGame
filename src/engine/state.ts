@@ -11,7 +11,7 @@ export function initialState(seed: string, start: StartProfile): GameState {
     seed,
     age: start.startAge,
     start,
-    fin: { cash: START_CASH[start.family], index: 0, property: 0, kpr: 0, kprMonthly: 0, pinjol: 0, cardDebt: 0, insured: false },
+    fin: { cash: START_CASH[start.family], index: 0, property: 0, kpr: 0, kprMonthly: 0, pinjol: 0, pinjolPrincipal: 0, cardDebt: 0, insured: false },
     career: {
       employed: true, level: 0, monthlyIncome: income, lastIncome: income,
       titleKey: `${start.education}_0`, security: START_SECURITY,

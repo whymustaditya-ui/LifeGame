@@ -54,3 +54,21 @@ describe('resolveChoice and applyEffect', () => {
     expect(s.flags.just_kpr).toBe(true);
   });
 });
+
+describe('applyEffect fixes from the final review', () => {
+  it('sells index funds before borrowing on overspending', () => {
+    const s = applyEffect(makeState({ fin: { ...makeState().fin, cash: 3_000_000, index: 10_000_000 } }), { cash: -5_000_000 });
+    expect(s.fin).toMatchObject({ cash: 0, index: 8_000_000, pinjol: 0 });
+  });
+  it('tracks pinjol principal as it is borrowed and repaid', () => {
+    const borrowed = applyEffect(makeState({ fin: { ...makeState().fin, cash: 0 } }), { cash: -10_000_000 });
+    expect(borrowed.fin).toMatchObject({ pinjol: 10_000_000, pinjolPrincipal: 10_000_000 });
+    const grown = { ...borrowed, fin: { ...borrowed.fin, pinjol: 16_000_000 } };
+    expect(applyEffect(grown, { pinjol: -8_000_000 }).fin).toMatchObject({ pinjol: 8_000_000, pinjolPrincipal: 5_000_000 });
+  });
+  it('offers family insurance at marriage and the first child only', () => {
+    expect(applyEffect(makeState(), { setMarried: true }).flags.family_insurance_due).toBe(true);
+    expect(applyEffect(makeState(), { addChild: true }).flags.family_insurance_due).toBe(true);
+    expect(applyEffect(makeState({ children: 1 }), { addChild: true }).flags.family_insurance_due).toBeUndefined();
+  });
+});

@@ -20,7 +20,7 @@ export interface StartProfile {
 }
 export interface Finances {
   cash: number; index: number; property: number; kpr: number; kprMonthly: number;
-  pinjol: number; cardDebt: number; insured: boolean;
+  pinjol: number; pinjolPrincipal: number; cardDebt: number; insured: boolean;
 }
 export interface Career {
   employed: boolean; level: number; monthlyIncome: number; lastIncome: number;

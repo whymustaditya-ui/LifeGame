@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest';
-import { dealYear } from './deal';
+import { dealYear, dueTriggers } from './deal';
+import { applyEffect } from './effects';
 import { draw, keyOf } from './rng';
 import { deepFreeze, findSeed, makeState } from './test-utils';
 import type { Card } from './types';
@@ -45,5 +46,14 @@ describe('dealYear', () => {
   it('clears a one-shot flag only when its card is dealt', () => {
     const s = makeState({ flags: { career_changed: true, first_salary_seen: true, first_insurance_seen: true } });
     expect(dealYear(s, cards).state.flags.career_changed).toBeUndefined();
+  });
+});
+
+describe('dealYear fixes from the final review', () => {
+  it('still offers family insurance when a full year pushes it out', () => {
+    const married = applyEffect(makeState({ wellbeing: 25, flags: { first_salary_seen: true, first_insurance_seen: true } }), { setMarried: true });
+    const year = dealYear(married, cards);
+    expect(year.cardIds).toEqual(['recovery', 'money_plan']);
+    expect(dueTriggers(year.state)).toContain('family_insurance');
   });
 });

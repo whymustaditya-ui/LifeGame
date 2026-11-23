@@ -25,3 +25,11 @@ describe('player styles and tables', () => {
     expect(t.luck.every((x, i, a) => i === 0 || a[i - 1]! <= x)).toBe(true);
   });
 });
+
+describe('player style fixes from the final review', () => {
+  it('frugal pays off pinjol instead of letting it grow', () => {
+    const payoff = SAMPLE_CARDS.find((c) => c.id === 'pinjol_payoff')!;
+    const inDebt = { ...run, state: { ...run.state, fin: { ...run.state.fin, cash: 20_000_000, pinjol: 10_000_000 } } };
+    expect(pickFor('frugal')(payoff, toVisible(inDebt.state), inDebt)).toBe('pay_all');
+  });
+});
