@@ -17,3 +17,12 @@ const FIXTURE_START: StartProfile = {
 export function makeState(overrides: Partial<GameState> = {}): GameState {
   return { ...initialState('fixture', FIXTURE_START), ...overrides };
 }
+
+/** Returns the first seed `s0`..`s9999` that satisfies pred, for tests that need a specific draw. */
+export function findSeed(pred: (seed: string) => boolean, limit = 10_000): string {
+  for (let i = 0; i < limit; i++) {
+    const seed = `s${i}`;
+    if (pred(seed)) return seed;
+  }
+  throw new Error('findSeed: no seed matched');
+}
