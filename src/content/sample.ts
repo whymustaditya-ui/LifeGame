@@ -34,6 +34,7 @@ export const SAMPLE_CARDS: readonly Card[] = [
   {
     id: 'money_plan', kind: 'dilemma', stages: ALL, repeatable: true, weight: 1,
     triggers: ['first_salary', 'career_change', 'married', 'child', 'kpr'],
+    moment: { kind: 'bank', from: 'm-Banking', copy: t('Salary received.', 'Gaji udah masuk.') },
     copy: t('Payday came in. Where does whatever is left each month go?', 'Gajian udah masuk. Sisa duit tiap bulan mau lo kemanain?'),
     choices: [
       { id: 'save_all', copy: label('Keep it all in savings', 'Tabung semua aja'), effect: () => ({ setPlan: 'save_all' }),
@@ -83,6 +84,7 @@ export const SAMPLE_CARDS: readonly Card[] = [
   },
   {
     id: 'japan_trip', kind: 'dilemma', stages: ['early', 'building'], repeatable: false, weight: 3,
+    moment: { kind: 'story', from: 'dindaaa.r', copy: t('posted a story from Kyoto', 'upload story dari Kyoto') },
     copy: t('Your group chat is booking Japan for April. Rp18 million each.', 'Grup chat udah mau booking Jepang buat April. Rp18 jt per orang. Lo ikut gak?'),
     choices: [
       { id: 'book', copy: label("Book it. I've earned this.", 'Gas, healing itu penting'), effect: () => ({ cash: -18_000_000, wellbeing: 15, friend: 8 }),
@@ -95,6 +97,7 @@ export const SAMPLE_CARDS: readonly Card[] = [
   },
   {
     id: 'kopi_bet', kind: 'dilemma', stages: ['early', 'building'], repeatable: false, weight: 2,
+    moment: { kind: 'chat', from: 'Bima', copy: t('Bro, got a minute? Business idea.', 'Bro, ada waktu bentar? Mau ngomongin bisnis.') },
     copy: t('Your friend is opening a kopi susu shop and needs Rp10 million from investors. Are you in?', 'Temen lo mau buka kedai kopi susu, lagi nyari modal Rp10 jt. Lo masuk?'),
     choices: [
       { id: 'invest', copy: label('Put in Rp10 million', 'Masuk, Rp10 jt'), effect: () => ({ cash: -10_000_000 }),
@@ -112,6 +115,7 @@ export const SAMPLE_CARDS: readonly Card[] = [
   },
   {
     id: 'health_check', kind: 'luck', stages: ALL, repeatable: true, weight: 2,
+    moment: { kind: 'notif', from: 'Klinik Sehat', copy: t('Your check-up results are ready.', 'Hasil check-up lo udah keluar.') },
     copy: t('Annual check-up at the clinic.', 'Medical check-up tahunan di klinik.'),
     roll: {
       p: (s) => 0.15 * oddsMultiplier(levelOf(s.wellbeing), 'bad'),
@@ -126,6 +130,7 @@ export const SAMPLE_CARDS: readonly Card[] = [
   },
   {
     id: 'friend_car', kind: 'feed', stages: ['early', 'building', 'peak'], repeatable: true, weight: 3,
+    moment: { kind: 'story', from: 'raka.wijaya', copy: t('posted a new story', 'upload story baru') },
     copy: t('Raka posts his new car. The caption says "small reward for myself".', 'Raka upload mobil barunya. Captionnya "self reward kecil-kecilan".'),
     choices: [
       { id: 'scroll', copy: label('Keep scrolling', 'Scroll lagi'),
@@ -135,6 +140,7 @@ export const SAMPLE_CARDS: readonly Card[] = [
   },
   {
     id: 'restructuring', kind: 'luck', stages: ['building', 'peak'], repeatable: true, weight: 1, eligible: (s) => s.career.employed,
+    moment: { kind: 'email', from: 'HR', copy: t('Invitation: Organizational alignment', 'Undangan: Organizational alignment') },
     copy: t('HR books a company-wide meeting called "Organizational alignment".', 'HR bikin meeting satu kantor, judulnya "Organizational alignment".'),
     roll: {
       p: (s) => Math.min(0.9, 0.3 * oddsMultiplier(levelOf(s.wellbeing), 'bad') * (s.career.security < 50 ? 1.5 : 1)),

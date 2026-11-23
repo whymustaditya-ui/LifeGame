@@ -1,7 +1,9 @@
 export type * from './types';
 export type { ArchetypeKey } from './archetype';
 export type { ChoiceResult } from './resolve';
+export { END_AGE } from './config';
 export { validateContent } from './content-check';
+export { PERCENTILE_TABLES } from './tables';
 export { rollStart, startLuckPercentile } from './lottery';
 export { percentileOf, type QuantileTable } from './percentile';
 export { buildReport, type Report } from './report';

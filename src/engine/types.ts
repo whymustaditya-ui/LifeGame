@@ -64,8 +64,12 @@ export interface Choice {
   roll?: Roll; result?: Localized<string>;
 }
 
+export type MomentKind = 'story' | 'chat' | 'bank' | 'email' | 'notif';
+/** The phone moment a card renders as (spec 5.5). `from` is a name or handle, the same in both languages. The engine ignores it. */
+export interface Moment { kind: MomentKind; from: string; copy: Localized<string> }
+
 export interface Card {
   id: string; kind: CardKind; stages: readonly LifeStage[]; repeatable: boolean; weight: number;
   triggers?: readonly Trigger[]; eligible?: (s: GameState) => boolean;
-  copy: Localized<string>; choices?: readonly Choice[]; roll?: Roll;
+  copy: Localized<string>; choices?: readonly Choice[]; roll?: Roll; moment?: Moment;
 }

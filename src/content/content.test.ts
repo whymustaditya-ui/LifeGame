@@ -2,6 +2,7 @@ import { describe, it, expect } from 'vitest';
 import { validateContent } from '../engine/content-check';
 import { makeState } from '../engine/test-utils';
 import { toVisible } from '../engine/visible';
+import { CONTENT } from './index';
 import { SAMPLE_CARDS } from './sample';
 
 describe('content validation and sample cards', () => {
@@ -18,6 +19,19 @@ describe('content validation and sample cards', () => {
   });
   it('flags an uncovered trigger', () => {
     expect(validateContent(SAMPLE_CARDS.filter((c) => c.id !== 'recovery')).join('\n')).toContain('capek');
+  });
+  it('flags a moment with no sender or missing Jaksel copy', () => {
+    const japan = SAMPLE_CARDS.find((c) => c.id === 'japan_trip')!;
+    const others = SAMPLE_CARDS.filter((c) => c.id !== 'japan_trip');
+    const noFrom = { ...japan, moment: { ...japan.moment!, from: ' ' } };
+    const noJaksel = { ...japan, moment: { ...japan.moment!, copy: { en: 'posted a story', jaksel: '' } } };
+    expect(validateContent([...others, noFrom]).join('\n')).toContain('japan_trip: empty moment sender');
+    expect(validateContent([...others, noJaksel]).join('\n')).toContain('japan_trip: empty moment in jaksel');
+  });
+  it('exports CONTENT as a valid set with moments on six cards', () => {
+    expect(validateContent(CONTENT)).toEqual([]);
+    expect(CONTENT.filter((c) => c.moment).map((c) => c.id).sort())
+      .toEqual(['friend_car', 'health_check', 'japan_trip', 'kopi_bet', 'money_plan', 'restructuring']);
   });
   it('grades the Japan trip by emergency months', () => {
     const japan = SAMPLE_CARDS.find((c) => c.id === 'japan_trip')!;
