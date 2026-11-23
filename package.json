@@ -1,0 +1,21 @@
+{
+  "name": "lifeworth",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "coverage": "vitest run --coverage",
+    "typecheck": "tsc --noEmit",
+    "sim": "tsx scripts/sim.ts",
+    "percentiles": "tsx scripts/percentiles.ts"
+  },
+  "devDependencies": {
+    "@types/node": "^24.12.3",
+    "@vitest/coverage-v8": "^4.1.9",
+    "tsx": "^4.19.0",
+    "typescript": "~6.0.2",
+    "vitest": "^4.1.9"
+  }
+}
