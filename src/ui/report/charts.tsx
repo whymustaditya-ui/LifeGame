@@ -57,11 +57,9 @@ export function NetWorthChart({ series, startAge }: { series: Series; startAge: 
       </svg>
       <div className="chart-axis" aria-hidden="true">
         <span>{startAge}</span>
-        {dropPoint && dropAge !== undefined && dropAge !== null && (
-          <span className="chart-drop" style={{ left: `${(dropPoint.x / W) * 100}%` }}>{s.drop(dropAge)}</span>
-        )}
         <span className="chart-end">{last.age}</span>
       </div>
+      {dropPoint && dropAge !== undefined && dropAge !== null && <small className="chart-drop">{s.drop(dropAge)}</small>}
     </figure>
   );
 }

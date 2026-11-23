@@ -5,6 +5,7 @@ import { CONTENT } from '../../content';
 import { PERCENTILE_TABLES, buildReport, pickFor, playToEnd, type Report } from '../../engine';
 import { formatShort, rankBand } from '../i18n/format';
 import { STRINGS } from '../i18n/strings';
+import { NetWorthChart } from '../report/charts';
 import { renderWithStore } from '../test/render';
 import { ReportScreen } from './ReportScreen';
 
@@ -31,6 +32,15 @@ it('reveals the whole life', () => {
     const label = card.choices!.find((c) => c.id === report.best!.choiceId)!.copy.en.label;
     expect(screen.getByText(s.best(report.best.age, label))).toBeInTheDocument();
   }
+});
+it('puts the drop label on its own line, clear of the axis ages', () => {
+  const series = [
+    { age: 18, netWorth: 10_000_000, wellbeing: 60 },
+    { age: 19, netWorth: 2_000_000, wellbeing: 60 },
+    { age: 20, netWorth: 50_000_000, wellbeing: 60 },
+  ];
+  renderWithStore(<NetWorthChart series={series} startAge={18} />);
+  expect(screen.getByText('Biggest drop at 19').closest('.chart-axis')).toBeNull();
 });
 it('starts another life', async () => {
   const { store, user } = renderWithStore(<ReportScreen />, { game: finished().game });
