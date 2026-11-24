@@ -99,7 +99,7 @@ The reveal shows how lucky the start was ("bottom 20% of starts"). The starting 
 The rule: anything you could check in real life is visible, and anything you can only feel stays hidden.
 
 Visible during play
-- **Money:** exact Rupiah savings and net worth in the top bar. Tapping it opens a read-only wallet sheet (Dompet) with cash, the emergency fund in months of expenses, investments, debts and insurance cover. Exact, because in real life you can check all of these.
+- **Money:** short Rupiah net worth in the top bar (Rp8.4B, so it fits a 320px phone). Tapping it opens a read-only wallet sheet (Dompet) with exact cash, the emergency fund in months of expenses, investments, debts and insurance cover. Exact there, because in real life you can check all of these.
 - **Job title and income,** shown in the year recap.
 - **Wellbeing as a feeling,** in four levels: Seger, Oke, Capek, Burnout (English: Great, Okay, Tired, Burnt out). The heart icon cracks as it falls, and Oren's expression and the copy reinforce it.
 - **Age,** on the life progress bar.

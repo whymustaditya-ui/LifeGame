@@ -1,0 +1,12 @@
+/* Spec section 6 (exact), then mockup v3, then additions for the green sheet and AA contrast. */
+:root {
+  --pandan: #3CC46B; --pandan-d: #2A9A51;
+  --telang: #1E9BF0; --telang-d: #1478C2; --telang-bg: #DDF1FF;
+  --sambal: #FF4D4F; --sambal-d: #D93A3C; --sambal-bg: #FFE5E5;
+  --kunyit: #FFC21A; --kunyit-d: #E0A100;
+  --ubi: #A46BF5; --ubi-d: #7E4BD1;
+  --ink: #2F3B45; --muted: #77838C; --line: #E3E7EA; --paper: #FFFFFF;
+  --telang-line: #8CCBF5; --kunyit-bg: #FFF3CC; --kunyit-text: #B88400;
+  --pandan-bg: #E2F7E9; --sambal-edge: #A82D2F; --muted-text: #66727B;
+  --radius: 16px; --edge: 4px; --font: 'Nunito', system-ui, sans-serif;
+}

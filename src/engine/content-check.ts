@@ -42,9 +42,12 @@ function cardProblems(card: Card): string[] {
     ...(card.kind === 'feed' && (n < 1 || n > 2) ? [`${card.id}: a feed card needs 1 or 2 choices`] : []),
     ...(card.kind === 'luck' && (!card.roll || n > 0) ? [`${card.id}: a luck card needs a roll and no choices`] : []),
   ];
+  const moment = card.moment;
   return [
     ...shape,
     ...textProblems(card.id, card.copy, 'copy'),
+    ...(moment && moment.from.trim() === '' ? [`${card.id}: empty moment sender`] : []),
+    ...textProblems(card.id, moment?.copy, 'moment'),
     ...rollProblems(card.id, card.roll),
     ...choices.flatMap((c) => choiceProblems(card, c)),
   ];

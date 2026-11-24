@@ -10,7 +10,14 @@
     "verbatimModuleSyntax": true,
     "skipLibCheck": true,
     "noEmit": true,
-    "types": ["node"]
+    "types": [
+      "node"
+    ]
   },
-  "include": ["src", "scripts"]
+  "include": [
+    "src/engine",
+    "src/content",
+    "src/app",
+    "scripts"
+  ]
 }
