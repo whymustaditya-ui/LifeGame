@@ -3,7 +3,7 @@ import { expect, it } from 'vitest';
 import type { Game } from '../../app/flow';
 import { CONTENT } from '../../content';
 import { PERCENTILE_TABLES, buildReport, pickFor, playToEnd, type Report } from '../../engine';
-import { formatShort, rankBand } from '../i18n/format';
+import { formatRupiah, rankBand } from '../i18n/format';
 import { STRINGS } from '../i18n/strings';
 import { NetWorthChart } from '../report/charts';
 import { renderWithStore } from '../test/render';
@@ -20,7 +20,7 @@ it('reveals the whole life', () => {
   const s = STRINGS.en.report;
   expect(screen.getByRole('heading', { level: 1, name: s.done })).toBeInTheDocument();
   expect(screen.getByRole('heading', { level: 2, name: s.archetype[report.archetype] })).toBeInTheDocument();
-  expect(within(screen.getByRole('group', { name: 'Net worth' })).getByText(formatShort(report.netWorth, 'en'))).toBeInTheDocument();
+  expect(within(screen.getByRole('group', { name: 'Net worth' })).getByText(formatRupiah(report.netWorth, 'en'))).toBeInTheDocument();
   expect(within(screen.getByRole('group', { name: 'Wellbeing' })).getByText(String(report.wellbeingFinal))).toBeInTheDocument();
   expect(within(screen.getByRole('group', { name: 'Decisions' })).getByText(report.grade)).toBeInTheDocument();
   expect(within(screen.getByRole('group', { name: 'Luck' })).getByText(rankBand(report.luckPct))).toBeInTheDocument();

@@ -18,8 +18,8 @@ Owner: Bro (Aditya). The workspace rules in the parent `CLAUDE.md` files apply: 
 | Plan | Scope | Status |
 |-|-|-|
 | 1 Engine | Pure TypeScript game logic, sample cards, CLI simulator, percentile tables | Done. Merged to main 2026-11-23. 73 tests, 95% coverage |
-| 2 Game UI | Vite + React app built on the engine: Duolingo-style screens from mockup v3, Oren the mascot, Motion animation, EN and Jaksel toggle, wallet sheet (Dompet), report with charts, autosave | Done on branch `feat/game-ui` 2026-11-23 (plan `docs/superpowers/plans/2026-11-23-lifeworth-game-ui.md`). 177 tests, 97% line coverage, 131 kB gzip JS |
-| 3 Content and tuning | About 30 dilemmas, 25 luck events and 15 feed posts in both languages with owner-reviewed Jaksel, balancing, 100,000-run percentile tables | After Plan 2 |
+| 2 Game UI | Vite + React app built on the engine: Duolingo-style screens from mockup v3, Oren the mascot, Motion animation, EN and Jaksel toggle, wallet sheet (Dompet), report with charts, autosave | Done on branch `feat/game-ui` 2026-11-23 (plan `docs/superpowers/plans/2026-11-23-lifeworth-game-ui.md`). 177 tests, 97% line coverage, 131 kB gzip JS. PR #1 open against main, not merged; Bro still to play a full life on a real phone |
+| 3 Content and tuning | About 30 dilemmas, 25 luck events and 15 feed posts in both languages with owner-reviewed Jaksel, balancing, 100,000-run percentile tables | Next. Start in a fresh session with `superpowers:writing-plans`, branching from `feat/game-ui` until PR #1 merges |
 | 4 Share, PWA, release | 1080 by 1920 share card, challenge links (`/c/<code>`), installable PWA, Playwright end-to-end, Lighthouse 90+, static hosting (Cloudflare Pages or Vercel) | Last. This is what makes it live |
 
 ## Commands
@@ -43,6 +43,10 @@ Owner: Bro (Aditya). The workspace rules in the parent `CLAUDE.md` files apply: 
 - `src/ui/`: React 19 screens and components. All UI copy is in `i18n/strings.ts` (both languages, typed); money formatting in `i18n/format.ts`. Motion only through `m.*` inside `LazyMotion strict` (`motion.tsx`). Colours are tokens in `styles/tokens.css`, guarded by an AA contrast test.
 - `scripts/`: the CLI simulator and the percentile generator.
 - Grading only ever sees `VisibleState` (what a player could check in real life). Luck is actual minus expected for every roll.
+
+## Settled decisions
+
+- Net worth display (2026-11-24): short form (Rp8.4B) in the top bar so it fits 320px; exact Rupiah on the report tile, which spans a full row (luck does too, to keep the grid balanced). The wallet sheet stays exact. Spec section on Money updated to match.
 
 ## Carry-forward requirements from the Plan 1 final review
 

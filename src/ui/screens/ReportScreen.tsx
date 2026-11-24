@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { PERCENTILE_TABLES, buildReport, type Card, type DecisionRecord, type Locale } from '../../engine';
 import { Oren } from '../art/Oren';
-import { formatShort, rankBand } from '../i18n/format';
+import { formatRupiah, rankBand } from '../i18n/format';
 import { NetWorthChart, WellbeingChart } from '../report/charts';
 import { useApp, useLocale, useStrings } from '../store';
 import '../report/report.css';
@@ -45,7 +45,7 @@ export function ReportScreen() {
       <p className="archetype-kicker">{r.yourLifeworth}</p>
       <h2 className="archetype">{r.archetype[report.archetype]}</h2>
       <div className="stat-tiles">
-        <StatTile tone="tile-networth" label={r.tile.netWorth} value={formatShort(report.netWorth, locale)} sub={rankBand(report.netWorthPct)} />
+        <StatTile tone="tile-networth" label={r.tile.netWorth} value={formatRupiah(report.netWorth, locale)} sub={rankBand(report.netWorthPct)} />
         <StatTile tone="tile-wellbeing" label={r.tile.wellbeing} value={String(report.wellbeingFinal)} sub={s.feeling[report.wellbeingLevel]} />
         <StatTile tone="tile-decisions" label={r.tile.decisions} value={report.grade} sub={r.calls(state.decisions.length)} />
         <StatTile tone="tile-luck" label={r.tile.luck} value={rankBand(report.luckPct)} />

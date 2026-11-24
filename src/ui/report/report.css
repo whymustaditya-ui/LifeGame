@@ -5,6 +5,7 @@
 
 .stat-tiles { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 .stat-tile { border: 2px solid var(--c); border-radius: 14px; overflow: hidden; text-align: center; min-width: 0; }
+.stat-tile.tile-networth, .stat-tile.tile-luck { grid-column: 1 / -1; }
 .stat-tile-head { display: block; background: var(--c); color: var(--t); font-size: 12px; font-weight: 900; padding: 3px 0; }
 .stat-tile-value { display: block; padding: 6px 4px 0; font-size: 19px; font-weight: 900; color: var(--v); }
 .stat-tile-sub { display: block; padding: 0 4px 6px; font-size: 13px; color: var(--muted-text); }
